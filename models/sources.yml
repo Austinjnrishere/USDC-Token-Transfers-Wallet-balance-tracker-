@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: usdc_source
+    description: "Source data for USDC token transfers and balances."
+    database: USDC
+    schema: usdc_schema
+    tables:
+      - name: raw_tx
+        description: "Landed raw USDC token transfers."
+        columns:
+          - name: transaction_hash
+            data_tests:
+              - not_null
+          - name: log_index
+            data_tests:
+              - not_null

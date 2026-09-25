@@ -1,0 +1,103 @@
+version: 2
+
+models:
+  
+  # 1. STAGING MODEL TESTS
+
+  - name: usdc_transfers
+    description: "Staged and cleaned USDC ERC-20 transfer logs."
+    data_tests:
+      # Ensure staging surrogate key remains unique across incremental runs
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_hash
+            - log_index
+
+    columns:
+      - name: tx_hash_log_index
+        description: "Surrogate primary key."
+        data_tests:
+          - unique
+          - not_null
+
+      - name: transaction_hash
+        description: "EVM transaction hash."
+        data_tests:
+          - not_null
+
+      - name: log_index
+        description: "Log index within the transaction."
+        data_tests:
+          - not_null
+
+      - name: from_address
+        description: "Sender EVM wallet address."
+        data_tests:
+          - not_null
+
+      - name: to_address
+        description: "Recipient EVM wallet address."
+        data_tests:
+          - not_null
+
+      - name: raw_value
+        description: "Raw 6-decimal integer string from payload."
+        data_tests:
+          - not_null
+
+
+  # ==========================================
+  # 2. INTERMEDIATE MODEL TESTS
+  # ==========================================
+  - name: usdc_wallet_deltas
+    description: "Unpivoted double-entry ledger of wallet inflows (+USDC) and outflows (-USDC)."
+    columns:
+      - name: wallet_address
+        description: "Wallet receiving or sending USDC."
+        data_tests:
+          - not_null
+
+      - name: block_timestamp
+        description: "Timestamp of transfer block."
+        data_tests:
+          - not_null
+
+      - name: usdc_delta
+        description: "Signed dollar change (+/- USDC)."
+        data_tests:
+          - not_null
+
+
+  # ==========================================
+  # 3. MARTS FACT MODEL TESTS
+  # ==========================================
+  - name: daily_usdc_wallet_balances
+    description: "Daily cumulative running balance per wallet."
+    data_tests:
+      # Each wallet can only have ONE balance record per calendar date
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet_address
+            - date_day
+
+    columns:
+      - name: wallet_daily_id
+        description: "Primary key (surrogate key of wallet_address + date_day)."
+        data_tests:
+          - unique
+          - not_null
+
+      - name: wallet_address
+        description: "EVM wallet address."
+        data_tests:
+          - not_null
+
+      - name: date_day
+        description: "Calendar date for the balance snapshot."
+        data_tests:
+          - not_null
+
+      - name: usdc_balance
+        description: "Cumulative end-of-day balance."
+        data_tests:
+          - not_null
