@@ -10,9 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: DBT_USDC
 
-    env:
-      DBT_PROFILES_DIR: ~/.dbt
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -44,7 +41,7 @@ jobs:
         run: dbt debug
 
       - name: Run dbt Models
-        run: dbt run
+        run: dbt run --target ci
 
       - name: Test dbt Models
-        run: dbt test
+        run: dbt test --target ci
