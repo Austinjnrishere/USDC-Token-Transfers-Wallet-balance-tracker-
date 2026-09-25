@@ -46,9 +46,9 @@ models:
           - not_null
 
 
-  # ==========================================
+  
   # 2. INTERMEDIATE MODEL TESTS
-  # ==========================================
+
   - name: usdc_wallet_deltas
     description: "Unpivoted double-entry ledger of wallet inflows (+USDC) and outflows (-USDC)."
     columns:
@@ -68,9 +68,9 @@ models:
           - not_null
 
 
-  # ==========================================
+  
   # 3. MARTS FACT MODEL TESTS
-  # ==========================================
+  
   - name: daily_usdc_wallet_balances
     description: "Daily cumulative running balance per wallet."
     data_tests:
