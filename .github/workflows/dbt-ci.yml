@@ -21,7 +21,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-          cache: 'pip' # Speeds up workflow runs by caching pip packages
 
       - name: Install dependencies
         run: |
