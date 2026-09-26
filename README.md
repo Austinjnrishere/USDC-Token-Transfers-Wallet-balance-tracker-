@@ -23,9 +23,9 @@ This project cleans landed JSON logs in Snowflake and uses dbt to transform sing
 
 | Layer | Model Name | Materialization | Purpose & Rationale |
 | :--- | :--- | :--- | :--- |
-| **Staging** | `stg_usdc_transfers` | `view` | **Filters & Cleans:** Selects USDC transfers (`0xa0b8...eb48`), formats EVM hex addresses to lowercase 20-byte strings, preserves `raw_value` as a string to prevent precision loss, and generates surrogate primary keys (`tx_hash` + `log_index`). |
-| **Intermediate** | `int_usdc_wallet_deltas` | `incremental` | **Unpivots Ledger:** A single transfer log contains both sender and receiver. This model unpivots each transaction into two entries (a **negative delta** for sender outflow and a **positive delta** for recipient inflow) and divides raw values by $10^6$ to compute exact human-readable USDC dollar amounts. |
-| **Marts** | `fct_daily_usdc_wallet_balances` | `incremental` | **Balance Aggregator:** Sums net daily changes per wallet and uses a window function (`SUM() OVER`) to compute cumulative running balances per wallet over time. |
+| **Staging** | `usdc_transfers` | `view` | **Filters & Cleans:** Selects USDC transfers (`0xa0b8...eb48`), formats EVM hex addresses to lowercase 20-byte strings, preserves `raw_value` as a string to prevent precision loss, and generates surrogate primary keys (`tx_hash` + `log_index`). |
+| **Intermediate** | `usdc_wallet_deltas` | `incremental` | **Unpivots Ledger:** A single transfer log contains both sender and receiver. This model unpivots each transaction into two entries (a **negative delta** for sender outflow and a **positive delta** for recipient inflow) and divides raw values by $10^6$ to compute exact human-readable USDC dollar amounts. |
+| **Marts** | `daily_usdc_wallet_balances` | `incremental` | **Balance Aggregator:** Sums net daily changes per wallet and uses a window function (`SUM() OVER`) to compute cumulative running balances per wallet over time. |
 
 ---
 
