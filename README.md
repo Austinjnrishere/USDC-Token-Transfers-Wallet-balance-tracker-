@@ -117,4 +117,4 @@ dbt deps
 
 
 
-🔗 **Live Interactive dbt Documentation & Lineage Graph:** [View Lineage Site]()
+🔗 **Live Interactive dbt Documentation & Lineage Graph:** [View Lineage Site](https://austinjnrishere.github.io/USDC-Token-Transfers-Wallet-balance-tracker-/)
