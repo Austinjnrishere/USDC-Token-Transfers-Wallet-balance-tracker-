@@ -114,3 +114,7 @@ usdcvenv\Scripts\activate  # On Linux/macOS: source usdcvenv/bin/activate
 # Install required packages
 pip install dbt-core dbt-snowflake
 dbt deps
+
+
+
+🔗 **Live Interactive dbt Documentation & Lineage Graph:** [View Lineage Site]()
